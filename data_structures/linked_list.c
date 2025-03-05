@@ -79,6 +79,16 @@ node_t *predecessor_node(node_t *curr, int value){
 void delete_node(node_t **head, int value){
   node_t *temp;
   node_t *pred;
+
+  temp = search_list(*head, value);
+  if (temp != NULL){
+    pred = predecessor_node(*head, value);
+    if (pred == NULL)                           /* if predecessor_node is the head */
+      *head = temp->next;
+    else
+      pred->next = temp->next;
+    free(temp);                            /* free memory used by node */
+  }
 }
 
 void print_list(node_t *head){
@@ -87,6 +97,7 @@ void print_list(node_t *head){
     printf("%d -> ", curr->value);
     curr = curr->next;
   }
+  printf("NULL\n");
 }
 
 
@@ -96,6 +107,8 @@ int main(int argc,  char **argv){
     insert(&head, i * 10);
   }
   print_list(head);
-  printf("\n");
+  delete_node(&head, 10);
+  printf("After delete_node(10)\n");
+  print_list(head);
   return 0;
 }
